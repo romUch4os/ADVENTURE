@@ -7,48 +7,46 @@ public class Program {
 	public static Scanner s = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		
-		
+
 		while( ! ( game.isGameOver() ) ) {
 			
-			game.atualizeMap();
+			System.out.print( "\n\nPlayer/> " );
+			String reader = s.nextLine();
 			
-			game.describeRoom();
-			
-			game.setItem("potion");
-			
-			game.pickUp("apple");
-			game.pickUp("potion");
-			
-			
-			/*		// para fazer leitura dos comandos
 			String[] splitted = reader.split(" ");
 			commands(splitted.length, splitted);
-			*/
-			
+						
 		}
 		
-		System.out.println("Acabou. BYEBYE!!");
+		System.out.println("CONGRATULATIONS, YOU WON!!");
 		
 	}
 	
-	public static void commands(int size, String[] command) {
+	public static void commands(int commandSize, String[] commandText) {
 
+		String command = commandText[0].toLowerCase();
+		
 		// 1-sized
-		if( size == 1 ) {
+		if( commandSize == 1 ) {
 			
-			switch( command[0] ) {
+			switch( command ) {
 				
 				case "view":
-					//game.view();
+					game.view();
 					break;
 					
 				case "inventory":
-					//game.inventory();
+					game.inventory();
 					break;
 					
 				case "exit":
-					//game.exit();
+					if( game.exit() )
+						System.out.println( "You went throught the door." );
+					break;
+					
+				case "throwaxe":
+					if( game.throwAxe() )
+						System.out.println( "You ve killed the damned troll!" );
 					break;
 					
 				default:
@@ -58,19 +56,28 @@ public class Program {
 		}
 		
 		// 2-sized
-		if( size == 2 ) {
+		if( commandSize == 2 ) {
 			
-			switch( command[0] ) {
-				case "moveTo":
+			String item = commandText[1].toLowerCase();
+			
+			if( ! ( item.equals("axe") || item.equals("potion") || item.equals("gold") ))
+					if( ! ( item.equals("treasure") || item.equals("key") ))
+				command = "invalid";
+			
+			switch( command ) {
+				case "moveto":
+					if( game.moveToItem( item ))
+						System.out.println( "You re now interacting with the " + item + "." );
 					break;
 				
-				case "pickUp":
+				case "pickup":
+					if( game.pickUp( item ))
+						System.out.println( "The " + item + " is now on your backpack." );
 					break;
 					
 				case "drop":
-					break;
-					
-				case "throwAxe":
+					if( game.drop( item ))
+						System.out.println( "You dropped the " + item + "." );
 					break;
 					
 				default:
@@ -80,11 +87,18 @@ public class Program {
 		}
 		
 		//3-sized
-		if( size == 3 ) {
+		if( commandSize == 3 ) {
 			
-			switch ( command[0] ) {
+			String doorID = commandText[2].toUpperCase();
+			
+			if( ! commandText[1].toLowerCase().equals( "door" ) )
+				command = "invalid";
+			
+			switch ( command ) {
 				
-				case "moveTo":
+				case "moveto":
+					if( game.moveToDoor(doorID) )
+						System.out.println( "You re now facing the door " + doorID + "." );
 					break;
 					
 				default:
@@ -92,9 +106,5 @@ public class Program {
 			}
 		}
 	}
-	
-	
-	
-	
 	
 }

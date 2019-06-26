@@ -3,57 +3,97 @@ import java.util.HashSet;
 
 public class Room {
 	
-	private Collection<Door> doors = new HashSet<Door>();
+	private Collection<DoorLabel> doors = new HashSet<DoorLabel>();
 	private Collection<Item> items = new HashSet<Item>();
+	Troll troll;
+	Treasure treasure = null;
 	
-	public Room(int destinyA) {
+	public Room(Door doorA) {
 		
-		doors.add( new Door("A", destinyA) );
+		troll = null;
+		doors.add( new DoorLabel("A", doorA) );
 	}
 	
-	public Room(int destinyA, int destinyB) {
+	public Room(Door doorA, Door doorB) {
 		
-		this( destinyA );
-		doors.add( new Door("B", destinyB) );
+		this( doorA );
+		doors.add( new DoorLabel("B", doorB) );
 	}
 	
-	public Room(int destinyA, int destinyB, int destinyC){
+	public Room(Door doorA, Door doorB, Door doorC){
 		
-		this( destinyA, destinyB );
-		doors.add( new Door("C", destinyC) );
-	}
-	
-	// /\ construcao das salas (contrutores)
-	
-	public int getDestiny(int goTo) {
-		
-		if( goTo == 1 )
-			for( Door d: doors )
-				if( d.getId() == "A" )
-					return d.getDestiny();
-		
-		if( goTo == 2 )
-			for( Door d: doors )
-				if( d.getId() == "B" )
-					return d.getDestiny();
-		
-		if( goTo == 3 )
-			for( Door d: doors )
-				if( d.getId() == "C" )
-					return d.getDestiny();
-		
-		return 5;
+		this( doorA, doorB );
+		doors.add( new DoorLabel("C", doorC) );
 	}
 	
 	public int getNumDoors() {
 		
 		return doors.size();
+	}
+	
+	public Door getDoor(String doorID) {
 		
+		for( DoorLabel door: doors )
+			if( door.getLabel().equals( doorID ) )
+				return door.getDoor();
+		
+		return null;
+	}
+	
+	public String getDoorLabel(Door door) {
+		
+		for( DoorLabel d: doors )
+			if( d.getDoor().equals( door ) )
+				return d.getLabel();
+		
+		return null;
+	}
+	
+	public void addTreasure(int amount) {
+		
+		if( treasure == null )
+			treasure = new Treasure( amount );
+		else
+			treasure.addAmount( amount );
+	}
+	
+	public Treasure getTreasure() {
+		
+		return treasure;
+	}
+	
+	public void removeTreasure() {
+		
+		treasure = null;
+	}
+	
+	public void addTroll(Troll troll) {
+		
+		this.troll = troll;
+	}
+	
+	public Troll getTroll() {
+		
+		return troll;
+	}
+	
+	public void removeTroll() {
+		
+		troll = null;
 	}
 	
 	public void addItem(Item item) {
 		
 		items.add(item);
+	}
+	
+	public Item getItem(String type) {
+		
+		for( Item i: items )
+			if( i.getType().equals( type ) )
+				return i;
+		
+		return null;
 	}
 	
 	public Collection<Item> getItems(){
@@ -65,18 +105,5 @@ public class Room {
 		
 		items.remove(item);		
 	}
-	
-	public Item getItem(String item) {
-		
-		for( Item i: items )
-			if( i.getType().equals(item) )
-				return i;
-		
-		return null;
-	}
-	
-	
-	
-	
 	
 }
