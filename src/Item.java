@@ -7,4 +7,9 @@ public class Item {
 		return this.type;
 	}
 	
+	
+	public String getDescription() {
+		
+		return this.type;
+	}
 }

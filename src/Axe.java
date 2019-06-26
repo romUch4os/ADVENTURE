@@ -5,5 +5,4 @@ public class Axe extends Item {
 		this.type = "axe";
 	}
 	
-	
 }
