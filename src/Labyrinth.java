@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 public class Labyrinth {
 	
@@ -7,6 +8,7 @@ public class Labyrinth {
 	private Door[] doors;
 	private Treasure treasure = new Treasure();
 	private Collection<Troll> trolls = new HashSet<Troll>();
+	private Random r = new Random();
 	
 	public Labyrinth() {
 
@@ -58,6 +60,39 @@ public class Labyrinth {
 		
 		
 		// colocar as paradas aleatorias
+		for( int i = 1; i <= 20; i++ ) {
+			
+			rooms[i].addTreasure( r.nextInt(10) );
+			
+			if( r.nextInt(2) == 1 )
+				rooms[i].addItem( new Axe() );
+			
+			if( r.nextInt(2) == 1 )
+				rooms[i].addItem( new Potion() );
+			
+			if( r.nextInt(4) == 1 ) {
+				
+				Troll troll = new Troll(i);
+				rooms[i].addTroll(troll);
+				trolls.add(troll);
+				
+			}
+			
+			if( r.nextInt(9) == 1 ) {
+				
+				Key key = new Key(i, doors[i]);
+				
+				int room = r.nextInt(19) + 1;
+				
+				while( room == doors[i].getRoomA() || room == doors[i].getRoomB() )
+					room = r.nextInt(19) + 1;
+				
+				rooms[room].addItem(key);
+				
+			}
+			
+		}
+		
 	}
 	
 	
@@ -66,10 +101,24 @@ public class Labyrinth {
 		return this.rooms[id];
 	}
 	
+	public int getDoorID(Door door) {
+		
+		for( int i = 0; i <= 15; i++ )
+			if( door.equals( doors[i] ) )
+				return i;
+		
+		return -1;
+	}
+	
 	
 	public int getTreasure() {
 		
 		return treasure.getAmount();
+	}
+	
+	public Collection<Troll> getTrolls(){
+		
+		return trolls;
 	}
 	
 	public void removeTroll(Troll troll) {

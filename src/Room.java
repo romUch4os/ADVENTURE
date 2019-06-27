@@ -40,6 +40,11 @@ public class Room {
 		return null;
 	}
 	
+	public Collection<DoorLabel> getDoors(){
+		
+		return doors;
+	}
+	
 	public String getDoorLabel(Door door) {
 		
 		for( DoorLabel d: doors )
@@ -104,6 +109,15 @@ public class Room {
 	public void removeItem(Item item) {
 		
 		items.remove(item);		
+	}
+	
+	// teste pra trolls
+	
+	public boolean hasTroll() {
+		
+		if( troll == null )
+			return false;
+		return true;
 	}
 	
 }

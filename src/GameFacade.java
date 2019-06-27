@@ -1,4 +1,8 @@
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 public class GameFacade {
 	
@@ -28,6 +32,15 @@ public class GameFacade {
 	}
 	
 	public void atualizeMap() {		// escrever atualizeMap
+		
+		Collection<Troll> trolls = labyrinth.getTrolls();
+		
+		for( Troll troll: trolls )
+			moveTroll( troll );
+		
+	}
+	
+	public void help() {
 		
 	}
 	
@@ -88,6 +101,55 @@ public class GameFacade {
 		System.out.println( "You have " + player.getTreasure() + " pieces of treasure." );
 	}
 	
+	public boolean pickUp() {
+
+		Room room = getRoom();	
+		Item item = player.getInteraction();
+		
+		if( item == null ) {
+			System.out.println( "You arent interacting with any item." );
+			return false;
+		}
+		
+		if( item instanceof Treasure ) {
+			
+			player.addTreasure( ((Treasure) item).getAmount() );
+			room.removeTreasure();
+			player.setInteraction( null );
+			return true;
+		}
+			
+		player.addItem(item);
+		player.setInteraction( null );
+		room.removeItem(item);
+			
+		return true;
+	}
+	
+	public boolean throwAxe() {
+		
+		Room room = getRoom();
+		
+		Troll troll = room.getTroll();
+		
+		if( troll == null ) {
+			System.out.println( "There is no troll in this room!" );
+			return false;
+		}
+		
+		Axe axe = player.getAxe();
+		if( axe == null ) {
+			System.out.println( "You dont have an axe!" );
+			return false;
+		}
+		
+		player.removeItem(axe);
+		labyrinth.removeTroll(troll);
+		room.removeTroll();
+		
+		return true;
+	}
+	
 	public boolean exit() {
 		
 		if( ! ( player.isAtDoor() ) ) {
@@ -115,30 +177,7 @@ public class GameFacade {
 			}
 		}
 		
-		return true;
-	}
-	
-	public boolean throwAxe() {
-		
-		Room room = getRoom();
-		
-		Troll troll = room.getTroll();
-		
-		if( troll == null ) {
-			System.out.println( "There is no troll in this room!" );
-			return false;
-		}
-		
-		Axe axe = player.getAxe();
-		if( axe == null ) {
-			System.out.println( "You dont have an axe!" );
-			return false;
-		}
-		
-		player.removeItem(axe);
-		labyrinth.removeTroll(troll);
-		room.removeTroll();
-		
+		atualizeMap();
 		return true;
 	}
 	
@@ -172,40 +211,6 @@ public class GameFacade {
 		return true;
 	}
 	
-	public boolean pickUp(String type) {
-
-		Room room = getRoom();
-		
-		if( type.equals( "gold" ) || type.equals( "treasure" ) ) {
-			
-			if( ! (player.isInteracting( "treasure" )) ) {
-				System.out.println( "You are not in the treasure of the room." );
-				return false;
-			}
-			
-			Treasure treasure = room.getTreasure();
-			
-			player.addTreasure( treasure.getAmount() );
-			player.setInteraction( null );
-			room.removeTreasure();
-			
-			return true;
-		}
-	
-		Item item = room.getItem( type );
-		
-		if( ! (player.isInteracting( type ))) {
-			System.out.println( "You arent interacting with that item." );
-			return false;
-		}
-		
-		player.addItem(item);
-		player.setInteraction( null );
-		room.removeItem(item);
-			
-		return true;
-	}
-	
 	public boolean drop(String type) {
 		
 		Room room = getRoom();
@@ -234,6 +239,13 @@ public class GameFacade {
 			return false;
 		}
 		
+		int id = labyrinth.getDoorID(door);
+		
+		if( id == 0 )
+			System.out.println( "You see a big 'EXIT?' painted with blood on the door." );
+		else
+			System.out.println( "You see a big '" + id + "' painted with blood on the door." );
+		
 		player.setDoor(door);
 		player.setInteraction(null);
 		
@@ -245,6 +257,29 @@ public class GameFacade {
 	private Room getRoom() {
 		
 		return labyrinth.getRoom( player.getPosition() );
+	}
+	
+	
+	// mover os trolls -- daqui pra baixo n ta pronto
+	
+	private Room getRoom(int id) {
+		
+		return labyrinth.getRoom( id );
+	}
+	
+	private void moveTroll( Troll troll ) {
+		
+	}
+	
+	//  testes
+	
+	public void showTrolls() {
+	/*	
+		Room[] rooms = labyrinth.getRooms();
+		
+		for( int i = 1; i <= 20; i++ )
+			System.out.println( "ROOM "+i+": " +rooms[i].hasTroll() );
+	*/
 	}
 	
 }

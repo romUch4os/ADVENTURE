@@ -10,6 +10,16 @@ public class Door {
 		this.roomB = roomB;
 	}
 	
+	public int getRoomA() {
+		
+		return roomA;
+	}
+	
+	public int getRoomB() {
+		
+		return roomB;
+	}
+	
 	public boolean isLocked() {
 		
 		return locked;
