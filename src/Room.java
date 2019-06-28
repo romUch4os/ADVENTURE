@@ -72,6 +72,13 @@ public class Room {
 		treasure = null;
 	}
 	
+	public boolean hasTroll() {
+		
+		if( troll == null )
+			return false;
+		return true;
+	}
+	
 	public void addTroll(Troll troll) {
 		
 		this.troll = troll;
@@ -109,15 +116,6 @@ public class Room {
 	public void removeItem(Item item) {
 		
 		items.remove(item);		
-	}
-	
-	// teste pra trolls
-	
-	public boolean hasTroll() {
-		
-		if( troll == null )
-			return false;
-		return true;
 	}
 	
 }

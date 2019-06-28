@@ -1,8 +1,4 @@
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
 
 public class GameFacade {
 	
@@ -33,11 +29,9 @@ public class GameFacade {
 	
 	public void atualizeMap() {		// escrever atualizeMap
 		
-		Collection<Troll> trolls = labyrinth.getTrolls();
-		
-		for( Troll troll: trolls )
-			moveTroll( troll );
-		
+		labyrinth.moveTrolls();
+		labyrinth.equipTrolls();
+		trollAttack();
 	}
 	
 	public void help() {
@@ -143,6 +137,12 @@ public class GameFacade {
 			return false;
 		}
 		
+		if( troll.hasAxe() ) {
+			
+			room.addItem( new Axe() );
+			troll.setAxe( null );
+		}
+		
 		player.removeItem(axe);
 		labyrinth.removeTroll(troll);
 		room.removeTroll();
@@ -165,8 +165,11 @@ public class GameFacade {
 		
 		if( player.getPosition() == 0 ) {	// se saiu do labirinto
 			
-			if( player.getTreasure() == labyrinth.getTreasure() )
+			if( player.getTreasure() == labyrinth.getTreasure() ) {
+				
+				System.out.println( "'''CONGRATULATIONS!! YOU WON!!'''" );
 				gameOver = true;
+			}
 			
 			else {
 				
@@ -177,8 +180,15 @@ public class GameFacade {
 			}
 		}
 		
+		System.out.println( "You went throught the door." );
 		atualizeMap();
 		return true;
+	}
+	
+	public void giveUp() {
+		
+		
+		
 	}
 	
 	public boolean moveToItem(String type) {
@@ -259,27 +269,40 @@ public class GameFacade {
 		return labyrinth.getRoom( player.getPosition() );
 	}
 	
-	
-	// mover os trolls -- daqui pra baixo n ta pronto
-	
-	private Room getRoom(int id) {
+	private void trollAttack() {
 		
-		return labyrinth.getRoom( id );
-	}
-	
-	private void moveTroll( Troll troll ) {
+		Room room = getRoom();
+		Troll troll = null;
 		
-	}
-	
-	//  testes
-	
-	public void showTrolls() {
-	/*	
-		Room[] rooms = labyrinth.getRooms();
-		
-		for( int i = 1; i <= 20; i++ )
-			System.out.println( "ROOM "+i+": " +rooms[i].hasTroll() );
-	*/
+		if( room.hasTroll() ) {
+			
+			troll = room.getTroll();
+			
+			if( troll.hasAxe() ) {
+
+				Item potion = player.getItem( "potion" );
+				
+				if( ! ( potion == null ) ) {
+
+					System.out.println( "You barely entered the room and...." );
+					System.out.println( "WOW! The troll throwed an axe at you, but you defended yourself with a potion(?!)." ); 
+					player.removeItem( potion );
+				}
+				
+				else {
+
+					System.out.println( "You barely entered the room and...." );
+					System.out.println( "WOW! The troll hitted you with an axe. You lost your savings." );
+					int value = player.getTreasure();
+					room.addTreasure( value );
+					player.removeTreasure();
+					
+				}
+				
+				troll.setAxe( null );
+				
+			}
+		}
 	}
 	
 }

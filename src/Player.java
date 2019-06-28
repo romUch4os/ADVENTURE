@@ -15,6 +15,7 @@ public class Player {
 		this.interaction = null;
 		this.atDoor = null;
 		this.treasure = new Treasure();
+		
 	}
 	
 	public int getPosition() {

@@ -19,4 +19,22 @@ public class Troll {
 		this.position = position;
 	}
 	
+	public boolean hasAxe() {
+		
+		if( axe== null )
+			return false;
+		
+		return true;
+	}
+	
+	public void setAxe(Axe axe) {
+		
+		this.axe = axe;
+	}
+	
+	public Axe getAxe() {
+		
+		return axe;
+	}
+	
 }

@@ -59,18 +59,18 @@ public class Labyrinth {
 		rooms[20] = new Room(doors[17]);
 		
 		
-		// colocar as paradas aleatorias
+		// add randomly items/trolls in the labyrinth
 		for( int i = 1; i <= 20; i++ ) {
 			
 			rooms[i].addTreasure( r.nextInt(10) );
 			
-			if( r.nextInt(2) == 1 )
+			if( r.nextInt(3) == 1 )
 				rooms[i].addItem( new Axe() );
 			
-			if( r.nextInt(2) == 1 )
+			if( r.nextInt(3) == 1 )
 				rooms[i].addItem( new Potion() );
 			
-			if( r.nextInt(4) == 1 ) {
+			if( r.nextInt(6) == 1 ) {
 				
 				Troll troll = new Troll(i);
 				rooms[i].addTroll(troll);
@@ -78,7 +78,7 @@ public class Labyrinth {
 				
 			}
 			
-			if( r.nextInt(9) == 1 ) {
+			if( r.nextInt(10) == 1 ) {
 				
 				Key key = new Key(i, doors[i]);
 				
@@ -95,7 +95,6 @@ public class Labyrinth {
 		
 	}
 	
-	
 	public Room getRoom(int id) {
 		
 		return this.rooms[id];
@@ -103,13 +102,12 @@ public class Labyrinth {
 	
 	public int getDoorID(Door door) {
 		
-		for( int i = 0; i <= 15; i++ )
+		for( int i = 0; i <= 20; i++ )
 			if( door.equals( doors[i] ) )
 				return i;
 		
 		return -1;
 	}
-	
 	
 	public int getTreasure() {
 		
@@ -124,6 +122,66 @@ public class Labyrinth {
 	public void removeTroll(Troll troll) {
 		
 		trolls.remove(troll);
+	}
+	
+	public void moveTrolls() {
+		
+		for( Troll troll : trolls ) {
+			
+			Room room = getRoom( troll.getPosition() );
+			
+			Collection<DoorLabel> labeled = room.getDoors();
+			
+			Door[] doors = new Door[ labeled.size() ];
+			int index = 0;
+			
+			for( DoorLabel d: labeled )
+				if( ! ( d.getDoor().isEnchanted() || d.getDoor().isLocked() ) ) {
+					
+					Door door = d.getDoor();
+					if( ! (door.equals( doors[0]) ) ) {
+						
+						doors[index] = d.getDoor();
+						index++;
+					}
+				}
+			
+			Random r = new Random();
+			int movement = r.nextInt( index );
+			
+			if( ! ( movement == index ) ) {
+
+				Door goTo = doors[movement];
+				int nextRoom = goTo.goThrought( troll.getPosition() );
+				
+				if( ! (nextRoom == 0 ) )
+					if( ! ( rooms[nextRoom].hasTroll() ) ) {
+						
+						room.removeTroll();
+						rooms[nextRoom].addTroll(troll);
+						troll.setPosition(nextRoom);
+						
+					}
+				
+			}
+			
+		}
+		
+	}
+	
+	public void equipTrolls() {
+		
+		for( Troll troll: trolls ) {
+		
+			Room room = getRoom( troll.getPosition() );
+			
+			Item axe = room.getItem( "axe" );
+			
+			if( ! ( axe == null || ! ( axe instanceof Axe ) ) ) {
+				troll.setAxe( (Axe) axe );
+				room.removeItem(axe);
+			}
+		}
 	}
 	
 }

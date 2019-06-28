@@ -8,6 +8,8 @@ public class Adventure {
 
 	public static void main(String[] args) {
 
+		//game.introduction();
+		
 		while (!(game.isGameOver())) {
 
 			System.out.print("\n\nPlayer/> ");
@@ -16,10 +18,7 @@ public class Adventure {
 			String[] splitted = reader.split(" ");
 			commands(splitted.length, splitted);
 
-			game.showTrolls();
 		}
-
-		System.out.println("CONGRATULATIONS, YOU WON!!");
 
 	}
 
@@ -45,18 +44,21 @@ public class Adventure {
 				break;
 
 			case "pickup":
-				if (game.pickUp())
+				if( game.pickUp() )
 					System.out.println("The item is now on your backpack.");
 				break;
 
 			case "throwaxe":
-				if (game.throwAxe())
+				if( game.throwAxe() )
 					System.out.println("You ve killed the damned troll!");
 				break;
 
 			case "exit":
-				if (game.exit())
-					System.out.println("You went throught the door.");
+				game.exit();
+				break;
+				
+			case "giveup":
+				//game.giveup();
 				break;
 
 			default:
@@ -76,12 +78,12 @@ public class Adventure {
 
 			switch (command) {
 			case "moveto":
-				if (game.moveToItem(item))
+				if( game.moveToItem(item) )
 					System.out.println("You re now interacting with the " + item + ".");
 				break;
 
 			case "drop":
-				if (game.drop(item))
+				if( game.drop(item) )
 					System.out.println("You dropped the " + item + ".");
 				break;
 
@@ -102,7 +104,7 @@ public class Adventure {
 			switch (command) {
 
 			case "moveto":
-				if (game.moveToDoor(doorID))
+				if( game.moveToDoor(doorID) )
 					System.out.println("You re now facing the door " + doorID + ".");
 				break;
 
