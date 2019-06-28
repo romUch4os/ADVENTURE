@@ -101,6 +101,15 @@ public class Player {
 		return null;
 	}
 	
+	public Potion getPotion() {
+		
+		for( Item i: items )
+			if( i instanceof Potion )
+				return (Potion) i;
+		
+		return null;
+	}
+	
 	public Collection<Item> getItems() {
 		
 		return items;

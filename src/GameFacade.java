@@ -22,6 +22,43 @@ public class GameFacade {
 		gameOver = false;
 	}
 	
+	public void introduction() {
+		
+		System.out.println( "\n\nDAMNED CAVE ADVENTURE! [Version: 0.9.8] \n" );
+		System.out.print("'' 'This cave is damned!' - said Gorgomoth, right before a troll opens his skull ");
+		System.out.print("with an axe. Moments later, the entire party was lying down on the ground covered ");
+		System.out.print("in blood, while one of the trolls ripped off Merkina`s head and starts to yell, ");
+		System.out.println("furiously. ''");
+		System.out.print("The tavern keeper closes the book and raise his head with an horrible expression ");
+		System.out.println("in his eyes. Every-single-one at the balcony is looking at him, terrified.");
+		System.out.print("He puts a smile on his face and starts laughing: '-HAHA! This was aeons ago, ");
+		System.out.print("now the cave is just a myth we tell children, so they can stay out of the woods.");
+		System.out.print("I bet with any of you that the only treasure hidden in there is Narth`s dignity. ");
+		System.out.println("Look at him! He is drooling at my balcony! HAHAHA! '");
+		System.out.println("Everybody starts to laught and yell, happily.");
+		System.out.println("You hear someone screaming: '-That round is on me! HAHAHAHA! Let`s drink, fellas!'\n");
+		
+		System.out.print("You were sitted in a table next to balcony, very drunk, like a drunken pig. ");
+		System.out.print("A thought goes through your adventurous mind. It's hard to get up, but you made it. ");
+		System.out.print("You start to walk without any sense of direction, and everything you remember after ");
+		System.out.println("that is a blur.\n");
+		
+		System.out.print("You wake up in the middle of the forest, at the entrance of a cave. On your right, you ");
+		System.out.println("see a sign written: 'TROLLS AHEAD! DO NOT GET IN!'");
+		System.out.print("The hangover is beating like hell, you try to put yourself together and start walk");
+		System.out.println("towards the cave.\n");
+		
+		System.out.print("Welcome to the Damned Cave!\nYour goal is to leave the cave with all the ");
+		System.out.print("treasure that is inside. There are items such: axes, potions and door keys. ");
+		System.out.println("But beware: there are trolls inside the cave, and they dont like humans!");
+		System.out.print("In every room there is 0-10 pieces of treasure, a 1/3 chance of having ");
+		System.out.print("an axe and/or a potion, 20 percent chance of having a troll, and each door has ");
+		System.out.println("10 percent chance of being locked. You gotta escape that maze. Good look!\n");
+		
+		System.out.println("You can type 'help' at any time in the game to see the command list.");
+		
+	}
+	
 	public boolean isGameOver() {
 		
 		return gameOver;
@@ -29,7 +66,6 @@ public class GameFacade {
 	
 	public void atualizeMap() {		// escrever atualizeMap
 		
-		labyrinth.moveTrolls();
 		labyrinth.equipTrolls();
 		trollAttack();
 	}
@@ -123,7 +159,6 @@ public class GameFacade {
 	public boolean throwAxe() {
 		
 		Room room = getRoom();
-		
 		Troll troll = room.getTroll();
 		
 		if( troll == null ) {
@@ -146,6 +181,35 @@ public class GameFacade {
 		player.removeItem(axe);
 		labyrinth.removeTroll(troll);
 		room.removeTroll();
+		
+		return true;
+	}
+	
+	public boolean usePotion() {
+		
+		if( player.isAtDoor() ) {
+			
+			Potion pot = player.getPotion();
+			
+			if( ! ( pot == null ) ) {
+				
+				Door door = player.getDoor();
+				door.enchant();
+				player.removeItem( pot );
+				
+			}
+			
+			else {
+				System.out.println("You dont have any potions.");
+				return false;
+			}
+			
+		}
+		
+		else {
+			System.out.println("You arent facing the door.");
+			return false;
+		}
 		
 		return true;
 	}

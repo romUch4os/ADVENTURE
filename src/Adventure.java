@@ -8,11 +8,11 @@ public class Adventure {
 
 	public static void main(String[] args) {
 
-		//game.introduction();
+		game.introduction();
 		
 		while (!(game.isGameOver())) {
 
-			System.out.print("\n\nPlayer/> ");
+			System.out.print("\nPlayer/> ");
 			String reader = s.nextLine();
 
 			String[] splitted = reader.split(" ");
@@ -51,6 +51,11 @@ public class Adventure {
 			case "throwaxe":
 				if( game.throwAxe() )
 					System.out.println("You ve killed the damned troll!");
+				break;
+				
+			case "usepotion":
+				if( game.usePotion() )
+					System.out.println( "You ve enchanted the door." );
 				break;
 
 			case "exit":
