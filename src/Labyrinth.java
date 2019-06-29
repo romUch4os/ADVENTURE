@@ -62,15 +62,15 @@ public class Labyrinth {
 		// add randomly items/trolls in the labyrinth
 		for( int i = 1; i <= 20; i++ ) {
 			
-			rooms[i].addTreasure( r.nextInt(10) );
+			rooms[i].addTreasure( r.nextInt(11) );	// 0-10 treasure pieces/room
 			
-			if( r.nextInt(3) == 1 )
+			if( r.nextInt(3) == 1 )		// 1/3 chance axe/room
 				rooms[i].addItem( new Axe() );
 			
-			if( r.nextInt(3) == 1 )
+			if( r.nextInt(3) == 1 )		// 1/3 chance potion/room
 				rooms[i].addItem( new Potion() );
 			
-			if( r.nextInt(6) == 1 ) {
+			if( r.nextInt(6) == 1 ) {	// 1/6 chance troll/room
 				
 				Troll troll = new Troll(i);
 				rooms[i].addTroll(troll);
@@ -78,14 +78,15 @@ public class Labyrinth {
 				
 			}
 			
-			if( r.nextInt(10) == 1 ) {
+			if( r.nextInt(10) == 1 ) {	// 10% chance locked door
 				
 				Key key = new Key(i, doors[i]);
+				doors[i].lock();
 				
-				int room = r.nextInt(19) + 1;
+				int room = r.nextInt(20) + 1;
 				
 				while( room == doors[i].getRoomA() || room == doors[i].getRoomB() )
-					room = r.nextInt(19) + 1;
+					room = r.nextInt(20) + 1;
 				
 				rooms[room].addItem(key);
 				
@@ -128,17 +129,22 @@ public class Labyrinth {
 		
 		for( Troll troll : trolls ) {
 			
+			// sala q se encontra o troll
 			Room room = getRoom( troll.getPosition() );
 			
+			// portas da sala, com seus label (A, B, C)
 			Collection<DoorLabel> labeled = room.getDoors();
 			
 			Door[] doors = new Door[ labeled.size() ];
 			int index = 0;
 			
+			// doors = portas que o troll pode atravessar
 			for( DoorLabel d: labeled )
+				
 				if( ! ( d.getDoor().isEnchanted() || d.getDoor().isLocked() ) ) {
 					
 					Door door = d.getDoor();
+					
 					if( ! (door.equals( doors[0]) ) ) {
 						
 						doors[index] = d.getDoor();
@@ -146,31 +152,31 @@ public class Labyrinth {
 					}
 				}
 			
+			// seleciona um random, indicando a porta q o troll vai
 			Random r = new Random();
 			int movement = r.nextInt( index );
-			
-			if( ! ( movement == index ) ) {
 
-				Door goTo = doors[movement];
-				int nextRoom = goTo.goThrought( troll.getPosition() );
-				
-				if( ! (nextRoom == 0 ) )
-					if( ! ( rooms[nextRoom].hasTroll() ) ) {
-						
-						room.removeTroll();
-						rooms[nextRoom].addTroll(troll);
-						troll.setPosition(nextRoom);
-						
-					}
-				
-			}
+			Door goTo = doors[movement];
+			int nextRoom = goTo.goThrought( troll.getPosition() );
 			
+			// verifica se o troll pode ir pra proxima sala; move o troll
+			if( ! ( nextRoom == 0 ) )
+				
+				if( ! ( rooms[nextRoom].hasTroll() ) ) {
+						
+					room.removeTroll();
+					rooms[nextRoom].addTroll(troll);
+					troll.setPosition(nextRoom);
+					
+				}
+				
 		}
 		
 	}
 	
 	public void equipTrolls() {
 		
+		// equipa os trolls com machado, caso estejam disponiveis nas salas
 		for( Troll troll: trolls ) {
 		
 			Room room = getRoom( troll.getPosition() );

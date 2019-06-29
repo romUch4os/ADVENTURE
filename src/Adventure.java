@@ -1,20 +1,17 @@
-import java.util.Scanner;
-
 public class Adventure {
 
 	static GameFacade game = GameFacade.getInstance();
 	static String reader;
-	public static Scanner s = new Scanner(System.in);
 
 	public static void main(String[] args) {
 
 		game.introduction();
 		
 		while (!(game.isGameOver())) {
+			
+			reader = game.readCommand();
 
-			System.out.print("\nPlayer/> ");
-			String reader = s.nextLine();
-
+				// formatar para mandar pra facade
 			String[] splitted = reader.split(" ");
 			commands(splitted.length, splitted);
 
@@ -45,17 +42,17 @@ public class Adventure {
 
 			case "pickup":
 				if( game.pickUp() )
-					System.out.println("The item is now on your backpack.");
+					System.out.println("\tThe item is now on your backpack.");
 				break;
 
 			case "throwaxe":
 				if( game.throwAxe() )
-					System.out.println("You ve killed the damned troll!");
+					System.out.println("\tYou ve killed the damned troll!");
 				break;
 				
 			case "usepotion":
 				if( game.usePotion() )
-					System.out.println( "You ve enchanted the door." );
+					System.out.println( "\tYou ve enchanted the door." );
 				break;
 
 			case "exit":
@@ -63,11 +60,11 @@ public class Adventure {
 				break;
 				
 			case "giveup":
-				//game.giveup();
+				game.giveUp();
 				break;
 
 			default:
-				System.out.println("Invalid command!!");
+				System.out.println("\tInvalid command!!");
 				break;
 			}
 		}
@@ -84,16 +81,16 @@ public class Adventure {
 			switch (command) {
 			case "moveto":
 				if( game.moveToItem(item) )
-					System.out.println("You re now interacting with the " + item + ".");
+					System.out.println("\tYou re now interacting with the " + item + ".");
 				break;
 
 			case "drop":
 				if( game.drop(item) )
-					System.out.println("You dropped the " + item + ".");
+					System.out.println("\tYou dropped the " + item + ".");
 				break;
 
 			default:
-				System.out.println("Invalid command!!");
+				System.out.println("\tInvalid command!!");
 			}
 
 		}
@@ -110,7 +107,7 @@ public class Adventure {
 
 			case "moveto":
 				if( game.moveToDoor(doorID) )
-					System.out.println("You re now facing the door " + doorID + ".");
+					System.out.println("\tYou re now facing the door " + doorID + ".");
 				break;
 
 			default:

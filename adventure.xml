@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
   <jar>C:\Users\lucas\Desktop\BKP\UFSJ\CC\ADVENTURE\GitHub\ADVENTURE.jar</jar>
-  <outfile>C:\Users\lucas\Desktop\BKP\UFSJ\CC\ADVENTURE\GitHub\ADVENTURE.exe</outfile>
+  <outfile>C:\Users\lucas\Desktop\BKP\UFSJ\CC\ADVENTURE\GitHub\ADVENTURE (windows).exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

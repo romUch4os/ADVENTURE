@@ -32,9 +32,4 @@ public class Troll {
 		this.axe = axe;
 	}
 	
-	public Axe getAxe() {
-		
-		return axe;
-	}
-	
 }
