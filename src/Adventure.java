@@ -1,15 +1,20 @@
+import java.util.Scanner;
+
 public class Adventure {
 
 	static GameFacade game = GameFacade.getInstance();
 	static String reader;
+	static Scanner s = new Scanner(System.in);
 
 	public static void main(String[] args) {
 
 		game.introduction();
 		
 		while (!(game.isGameOver())) {
-			
-			reader = game.readCommand();
+
+				// ler entrada do jogador
+			System.out.print("\nPlayer/> ");
+			String reader = s.nextLine();
 
 				// formatar para mandar pra facade
 			String[] splitted = reader.split(" ");

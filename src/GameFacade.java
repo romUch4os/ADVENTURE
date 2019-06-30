@@ -1,14 +1,11 @@
 import java.util.Collection;
-import java.util.Scanner;
 
 public class GameFacade {
 	
 	private static GameFacade instance = null;
-//	private GraphicInterface gui;
 	private Labyrinth labyrinth = null;
 	private Player player = null;
 	private Boolean gameOver;
-	private Scanner s;
 	
 	public static GameFacade getInstance() {
 		
@@ -20,19 +17,9 @@ public class GameFacade {
 	
 	private GameFacade() {
 		
-//		gui = GraphicInterface.getInstance();
 		player = new Player();
 		labyrinth = new Labyrinth();
-		s = new Scanner(System.in);
 		gameOver = false;
-	}
-	
-	public String readCommand() {
-
-		System.out.print("\nPlayer/> ");
-		String reader = s.nextLine();
-		
-		return reader;
 	}
 	
 	public void introduction() {
